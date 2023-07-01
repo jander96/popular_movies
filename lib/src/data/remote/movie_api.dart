@@ -1,3 +1,4 @@
+
 import 'package:dio/dio.dart';
 import 'package:popular_movies/src/data/constants/constants.dart';
 import 'package:popular_movies/src/data/models/moviedb_response.dart';
@@ -12,18 +13,26 @@ class ApiService {
   }));
 
   Future<List<MovieMovieDB>> getPopularMovies({int page = 1}) async {
-    final response = await dio.get(MovieDbConstants.popularPath,
-        queryParameters: {MovieDbConstants.queryParameterPage: page});
+    try {
+      final response = await dio.get(MovieDbConstants.popularPath,
+          queryParameters: {MovieDbConstants.queryParameterPage: page});
 
-    final movieDbResponse = MovieDbResponse.fromJson(response.data);
-    final List<MovieMovieDB> movies = movieDbResponse.results;
+      final movieDbResponse = MovieDbResponse.fromJson(response.data);
+      final List<MovieMovieDB> movies = movieDbResponse.results;
 
-    return movies;
+      return movies;
+    } on Exception catch (e) {
+      return Future.error(e);
+    }
   }
 
   Future<MovieMovieDB> getMovieById(int movieId) async {
-    final response = await dio.get(MovieDbConstants.movieDetail(movieId));
-    final MovieMovieDB movie = MovieMovieDB.fromJson(response.data);
-    return movie;
+    try {
+      final response = await dio.get(MovieDbConstants.movieDetail(movieId));
+      final MovieMovieDB movie = MovieMovieDB.fromJson(response.data);
+      return movie;
+    } on Exception catch (e) {
+      return Future.error(e);
+    }
   }
 }
