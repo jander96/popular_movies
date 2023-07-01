@@ -82,6 +82,7 @@ class _Image extends StatelessWidget {
           child: FadeInImage(
             image: NetworkImage(movie.posterPath),
             placeholder: const AssetImage("assets/images/loader.gif"),
+            imageErrorBuilder: (_, __, ___) => Image.asset("assets/images/load_image_error.png"),
             fit: BoxFit.cover,
             placeholderFit: BoxFit.cover,
             height: 112,

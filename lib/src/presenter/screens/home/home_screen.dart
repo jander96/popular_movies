@@ -26,6 +26,7 @@ class _HomeView extends StatelessWidget {
     final viewModel = context.read<HomeViewModel>();
 
     return Scaffold(
+      appBar: AppBar(title: const Text("Movie App")),
       body: SafeArea(
         child:
             Padding(padding: const EdgeInsets.all(8.0), child: render(state,viewModel)),
