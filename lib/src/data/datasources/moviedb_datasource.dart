@@ -5,18 +5,18 @@ import 'package:popular_movies/src/domain/models/movie.dart';
 import '../../domain/datasources/movies_datasource.dart';
 
 class MovieDbDatasource extends RemoteMovieDatasource {
-  MovieDbDatasource(this.api);
-  final ApiService api;
+  MovieDbDatasource(this._api);
+  final ApiService _api;
   @override
   Future<Movie> getMovieById(int movieId) {
-    return api
+    return _api
         .getMovieById(movieId)
         .then((movie) => MovieMapper.movieDbToEntity(movie));
   }
 
   @override
   Future<List<Movie>> getPopularMovies({int page = 1}) {
-    return api.getPopularMovies(page: page).then((movieList) {
+    return _api.getPopularMovies(page: page).then((movieList) {
       final List<Movie> movies = movieList
           .where((moviedb) => moviedb.posterPath != 'no-poster')
           .map((e) => MovieMapper.movieDbToEntity(e))
