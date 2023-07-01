@@ -6,19 +6,28 @@ import '../../../di/injector.dart';
 
 class HomeViewModel extends Cubit<HomeViewState> {
   final GetPopularMovies _getPopularMovies;
+  int _currentPage = 1;
+  bool _loadingNextPage = false;
   HomeViewModel()
       : _getPopularMovies = injector.get<GetPopularMovies>(),
         super(const HomeViewState()) {
     _loadMovies();
   }
 
-  void _loadMovies({int page = 1}) {
-    emit(state.copyWith(isLoading: true));
-
-    _getPopularMovies(page: page).then((movies) {
-      emit(state.copyWith(isLoading: false, movies: movies));
+  Future<void> _loadMovies() async {
+    _getPopularMovies(page: _currentPage).then((movies) {
+      emit(state.copyWith(
+          isLoading: false, movies: [...state.movies, ...movies], error: null));
     }).onError((Exception error, _) {
       emit(state.copyWith(error: error, isLoading: false));
     });
+  }
+
+  Future<void> nextPage() async {
+    if (_loadingNextPage) return;
+    _loadingNextPage = true;
+    _currentPage++;
+    await _loadMovies();
+    _loadingNextPage = false;
   }
 }

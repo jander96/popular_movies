@@ -2,20 +2,48 @@ import 'package:flutter/material.dart';
 
 import '../../domain/models/movie.dart';
 
-class MovieListView extends StatelessWidget {
+class MovieListView extends StatefulWidget {
   final List<Movie> movies;
   final VoidCallback? onTap;
-  const MovieListView({super.key, required this.movies, this.onTap});
+  final VoidCallback? loadNextPage;
+  const MovieListView(
+      {super.key, required this.movies, this.onTap, this.loadNextPage});
+
+  @override
+  State<MovieListView> createState() => _MovieListViewState();
+}
+
+class _MovieListViewState extends State<MovieListView> {
+  final controller = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      if (widget.loadNextPage == null) return;
+      if (controller.position.pixels + 200 >=
+          controller.position.maxScrollExtent) {
+        widget.loadNextPage!();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: movies.length,
+      controller: controller,
+      itemCount: widget.movies.length,
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) {
-        return _ItemView(movie: movies[index]);
+        return _ItemView(movie: widget.movies[index]);
       },
     );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }
 
@@ -26,10 +54,10 @@ class _ItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8,vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Card(
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [_Image(movie), Expanded(child: _Overview(movie))],
       )),
     );
@@ -75,17 +103,34 @@ class _Overview extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(movie.title, style: const TextStyle(fontWeight: FontWeight.bold),maxLines: 1,overflow: TextOverflow.ellipsis,),
-          const SizedBox(height: 4,),
+          Text(
+            movie.title,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(
+            height: 4,
+          ),
           Row(
             children: [
-              const Icon(Icons.star_half, color: Colors.amber,),
-              const SizedBox(width: 4,),
+              const Icon(
+                Icons.star_half,
+                color: Colors.amber,
+              ),
+              const SizedBox(
+                width: 4,
+              ),
               Text(movie.voteAverage.toString()),
             ],
           ),
-          Text(movie.overview,maxLines: 3, overflow: TextOverflow.ellipsis,textAlign: TextAlign.justify ,style: TextStyle(fontWeight: FontWeight.w300),)
-
+          Text(
+            movie.overview,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.justify,
+            style: const TextStyle(fontWeight: FontWeight.w300),
+          )
         ],
       ),
     );

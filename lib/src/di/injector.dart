@@ -25,5 +25,5 @@ void setupInjector() {
   
   
   injector.registerFactory<GetMovieById>(()=>GetMovieById(repository));
-  final getMovieByIdUseCase = injector.get<GetMovieById>();
+  
 }

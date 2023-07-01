@@ -12,43 +12,42 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (BuildContext context) => HomeViewModel(), child: const _HomeView());
+        create: (BuildContext context) => HomeViewModel(),
+        child: const _HomeView());
   }
 }
 
 class _HomeView extends StatelessWidget {
-  const _HomeView({
-    super.key,
-  });
+  const _HomeView();
 
   @override
   Widget build(BuildContext context) {
     final state = context.watch<HomeViewModel>().state;
-    
+    final viewModel = context.read<HomeViewModel>();
+
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: render(state)
-        ),
+        child:
+            Padding(padding: const EdgeInsets.all(8.0), child: render(state,viewModel)),
       ),
     );
   }
 
-  Widget render(HomeViewState state){
-    if (state.isLoading){
+  Widget render(HomeViewState state, HomeViewModel viewModel) {
+    if (state.isLoading) {
       return const Center(child: CircularProgressIndicator());
-    }else{
+    } else {
       if (state.error != null) {
-        return const Center(child: Column(
-          children: [
-            Icon(Icons.error),
-            Text("Connection error ")
-          ],
+        return const Center(
+            child: Column(
+          children: [Icon(Icons.error), Text("Connection error ")],
         ));
-        }else{
-          return MovieListView(movies: state.movies);
-        }
+      } else {
+        return MovieListView(
+          movies: state.movies,
+          loadNextPage: viewModel.nextPage,
+        );
+      }
     }
   }
 }
