@@ -28,27 +28,32 @@ class _HomeView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Movie App")),
       body: SafeArea(
-        child:
-            Padding(padding: const EdgeInsets.all(8.0), child: render(state,viewModel)),
+        child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: render(state, viewModel)),
       ),
     );
   }
 
   Widget render(HomeViewState state, HomeViewModel viewModel) {
-    if (state.isLoading) {
-      return const Center(child: CircularProgressIndicator());
+    if (state.error != null) {
+      return Center(
+          child: Column(
+        children: [
+          OutlinedButton(
+              onPressed: viewModel.loadMovies,
+              child: const Icon(Icons.replay_rounded)),
+          const Text("Connection error ")
+        ],
+      ));
     } else {
-      if (state.error != null) {
-        return const Center(
-            child: Column(
-          children: [Icon(Icons.error), Text("Connection error ")],
-        ));
-      } else {
-        return MovieListView(
+      return Stack(children: [
+        MovieListView(
           movies: state.movies,
           loadNextPage: viewModel.nextPage,
-        );
-      }
+        ),
+        if(state.isLoading)  const Center(child: CircularProgressIndicator())
+      ]);
     }
   }
 }

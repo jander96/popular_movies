@@ -15,7 +15,7 @@ class HomeViewState extends Equatable {
       HomeViewState(
           isLoading: isLoading ?? this.isLoading,
           movies: movies ?? this.movies,
-          error: error ?? this.error);
+          error: error);
 
   @override
   List<Object?> get props => [isLoading,movies,error];

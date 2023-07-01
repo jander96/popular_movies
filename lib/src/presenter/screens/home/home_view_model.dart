@@ -11,10 +11,11 @@ class HomeViewModel extends Cubit<HomeViewState> {
   HomeViewModel()
       : _getPopularMovies = injector.get<GetPopularMovies>(),
         super(const HomeViewState()) {
-    _loadMovies();
+    loadMovies();
   }
 
-  Future<void> _loadMovies() async {
+  Future<void> loadMovies() async {
+    emit(state.copyWith(isLoading: true));
     _getPopularMovies(page: _currentPage).then((movies) {
       emit(state.copyWith(
           isLoading: false, movies: [...state.movies, ...movies], error: null));
@@ -27,7 +28,7 @@ class HomeViewModel extends Cubit<HomeViewState> {
     if (_loadingNextPage) return;
     _loadingNextPage = true;
     _currentPage++;
-    await _loadMovies();
+    await loadMovies();
     _loadingNextPage = false;
   }
 }
