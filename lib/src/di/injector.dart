@@ -22,7 +22,7 @@ void setupInjector() {
   final repository = injector.get<MovieRepository>();
 
   injector.registerFactory<GetPopularMovies>(()=> GetPopularMovies(repository));
-  final getPopularMoviesUseCase = injector.get<GetPopularMovies>();
+  
   
   injector.registerFactory<GetMovieById>(()=>GetMovieById(repository));
   final getMovieByIdUseCase = injector.get<GetMovieById>();
