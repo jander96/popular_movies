@@ -30,15 +30,19 @@ class _DetailsView extends StatelessWidget {
 
   Widget render(DetailViewState state, DetailsViewModel viewModel) {
     if (state.error != null) {
-      return Center(
-          child: Column(
-        children: [
-          OutlinedButton(
-              onPressed: viewModel.loadMovie,
-              child: const Icon(Icons.replay_rounded)),
-          const Text("Connection error ")
-        ],
-      ));
+      return Scaffold(
+        body: SafeArea(
+          child: Center(
+              child: Column(
+            children: [
+              OutlinedButton(
+                  onPressed: viewModel.loadMovie,
+                  child: const Icon(Icons.replay_rounded)),
+              const Text("Connection error ")
+            ],
+          )),
+        ),
+      );
     } else {
       if (state.isLoading || state.movie == null) {
         return const Center(
