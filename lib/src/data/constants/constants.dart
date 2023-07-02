@@ -8,9 +8,9 @@ class MovieDbConstants {
 
   static const apiKey = '548f82996984bbd96d00735a0f2addbc';
 
-  static const queryParameterLanguaje = 'languaje';
+  static const queryParameterLanguaje = 'language';
 
-  static const defaultLanguaje = 'es-MX';
+  static const defaultLanguaje = 'es-ES';
 
   static const popularPath = '/movie/popular';
 
