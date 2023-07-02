@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../domain/models/movie.dart';
 
@@ -55,11 +56,14 @@ class _ItemView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Card(
-          child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [_Image(movie), Expanded(child: _Overview(movie))],
-      )),
+      child: GestureDetector(
+        onTap: ()=> context.push("/movie/${movie.id}"),
+        child: Card(
+            child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [_Image(movie), Expanded(child: _Overview(movie))],
+        )),
+      ),
     );
   }
 }
