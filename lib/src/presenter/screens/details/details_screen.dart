@@ -6,7 +6,6 @@ import 'package:popular_movies/src/presenter/screens/details/details_view_model.
 import '../../../domain/models/movie.dart';
 
 class MoviePage extends StatelessWidget {
-  
   final String movieId;
   const MoviePage({super.key, required this.movieId});
 
@@ -111,6 +110,9 @@ class _MovieDetails extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(movie.title, style: textStyles.titleLarge),
+                    Text('(${movie.originalTitle})',
+                        style: textStyles.titleSmall),
+                    Text(movie.originalLanguage),
                     Text(movie.overview),
                   ],
                 ),
@@ -118,24 +120,39 @@ class _MovieDetails extends StatelessWidget {
             ],
           ),
         ),
-
-        // Generos de la película
         Padding(
-          padding: const EdgeInsets.all(8),
-          child: Wrap(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ...movie.genreIds.map((gender) => Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    child: Chip(
-                      label: Text(gender),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                    ),
-                  ))
+              Text(
+                'Fecha de lanzamiento: ${movie.releaseDate.day}/${movie.releaseDate.month}/${movie.releaseDate.year}',
+                style: textStyles.titleSmall,
+              ),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.star_half,
+                    color: Colors.amber,
+                  ),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Text(movie.voteAverage.toString()),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  Text('votos: ${movie.voteCount}'),
+                   const SizedBox(
+                    width: 16,
+                  ),
+                  Text('popularidad: ${movie.popularity}')
+                ],
+              ),
+              Text("Contenido solo para adultos: ${movie.adult ? 'Si': 'No'}")
             ],
           ),
         ),
-
         const SizedBox(height: 50),
       ],
     );
@@ -153,15 +170,10 @@ class _CustomSliverAppBar extends StatelessWidget {
 
     return SliverAppBar(
       backgroundColor: Colors.black,
-      expandedHeight: size.height * 0.7,
+      expandedHeight: size.height * 0.5,
       foregroundColor: Colors.white,
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        // title: Text(
-        //   movie.title,
-        //   style: const TextStyle(fontSize: 20),
-        //   textAlign: TextAlign.start,
-        // ),
         background: Stack(
           children: [
             SizedBox.expand(
@@ -173,27 +185,6 @@ class _CustomSliverAppBar extends StatelessWidget {
                   return child;
                 },
               ),
-            ),
-            const SizedBox.expand(
-              child: DecoratedBox(
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          stops: [0.7, 1.0],
-                          colors: [Colors.transparent, Colors.black87]))),
-            ),
-            const SizedBox.expand(
-              child: DecoratedBox(
-                  decoration: BoxDecoration(
-                      gradient:
-                          LinearGradient(begin: Alignment.topLeft, stops: [
-                0.0,
-                0.3
-              ], colors: [
-                Colors.black87,
-                Colors.transparent,
-              ]))),
             ),
           ],
         ),
