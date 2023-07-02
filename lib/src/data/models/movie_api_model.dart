@@ -47,6 +47,22 @@ class MovieMovieDB {
         voteAverage: json["vote_average"]?.toDouble(),
         voteCount: json["vote_count"],
     );
+    factory MovieMovieDB.fromJsonIndividual(Map<String, dynamic> json) => MovieMovieDB(
+        adult: json["adult"] ?? false,
+        backdropPath: json["backdrop_path"] ?? "",
+        genreIds: List<int>.from(json["genres"].map((map) => map['id'])),
+        id: json["id"],
+        originalLanguage: json["original_language"],
+        originalTitle: json["original_title"],
+        overview: json["overview"] ?? "",
+        popularity: json["popularity"]?.toDouble(),
+        posterPath: json["poster_path"] ?? "",
+        releaseDate: DateTime.parse(json["release_date"]),
+        title: json["title"],
+        video: json["video"],
+        voteAverage: json["vote_average"]?.toDouble(),
+        voteCount: json["vote_count"],
+    );
 
     Map<String, dynamic> toJson() => {
         "adult": adult,

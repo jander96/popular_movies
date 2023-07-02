@@ -29,7 +29,7 @@ class ApiService {
   Future<MovieMovieDB> getMovieById(int movieId) async {
     try {
       final response = await dio.get(MovieDbConstants.movieDetail(movieId));
-      final MovieMovieDB movie = MovieMovieDB.fromJson(response.data);
+      final MovieMovieDB movie = MovieMovieDB.fromJsonIndividual(response.data);
       return movie;
     } on Exception catch (e) {
       return Future.error(e);
