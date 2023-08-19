@@ -1,6 +1,8 @@
+import '../models/exceptions.dart';
 import '../models/movie.dart';
+import '../models/result.dart';
 
 abstract class MovieRepository{
-  Future<List<Movie>> getPopularMovies({int page = 1});
-  Future<Movie> getMovieById(int movieId);
+  Future<Result<List<Movie>,AppException>> getPopularMovies({int page = 1});
+  Future<Result<Movie,AppException>> getMovieById(int movieId);
 }

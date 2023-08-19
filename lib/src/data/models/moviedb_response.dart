@@ -1,32 +1,24 @@
+// ignore_for_file: invalid_annotation_target
+
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'movie_api_model.dart';
 
-class MovieDbResponse {
-    
-    final int page;
-    final List<MovieMovieDB> results;
-    final int totalPages;
-    final int totalResults;
+part 'moviedb_response.g.dart';
+part 'moviedb_response.freezed.dart';
 
-    MovieDbResponse({
-        required this.page,
-        required this.results,
-        required this.totalPages,
-        required this.totalResults,
-    });
+@freezed
+class MovieDbResponse with _$MovieDbResponse {
+    factory MovieDbResponse({
+      int? page,
+      List<MovieMovieDB>? results,
+      @JsonKey(name: 'total_page')
+      int? totalPages,
+      @JsonKey(name: 'total_result')
+      int? totalResults,
+}) = _MovieDbResponse;
 
-    factory MovieDbResponse.fromJson(Map<String, dynamic> json) => MovieDbResponse(
-        page: json["page"],
-        results: List<MovieMovieDB>.from(json["results"].map((x) => MovieMovieDB.fromJson(x))),
-        totalPages: json["total_pages"],
-        totalResults: json["total_results"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "page": page,
-        "results": List<dynamic>.from(results.map((x) => x.toJson())),
-        "total_pages": totalPages,
-        "total_results": totalResults,
-    };
+    factory MovieDbResponse.fromJson(Map<String, dynamic> json) => _$MovieDbResponseFromJson(json);
 }
 
 

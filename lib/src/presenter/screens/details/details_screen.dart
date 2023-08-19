@@ -38,7 +38,7 @@ class _DetailsView extends StatelessWidget {
               OutlinedButton(
                   onPressed: viewModel.loadMovie,
                   child: const Icon(Icons.replay_rounded)),
-              const Text("Connection error ")
+              Text(state.error?.message ?? '')
             ],
           )),
         ),

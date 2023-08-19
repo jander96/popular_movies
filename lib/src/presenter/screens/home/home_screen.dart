@@ -43,7 +43,7 @@ class _HomeView extends StatelessWidget {
           OutlinedButton(
               onPressed: viewModel.loadMovies,
               child: const Icon(Icons.replay_rounded)),
-          const Text("Connection error ")
+          Text(state.error?.message ?? '')
         ],
       ));
     } else {

@@ -14,5 +14,5 @@ class MovieDbConstants {
 
   static const popularPath = '/movie/popular';
 
-  static String movieDetail(int id) => '/movie/$id';
+  static const movieDetail = '/movie/{id}';
 }

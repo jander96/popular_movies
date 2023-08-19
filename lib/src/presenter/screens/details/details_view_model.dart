@@ -3,6 +3,8 @@ import 'package:popular_movies/src/di/injector.dart';
 import 'package:popular_movies/src/domain/uses_cases/get_movie_byid.dart';
 import 'package:popular_movies/src/presenter/screens/details/details_state.dart';
 
+import '../../../domain/models/result.dart';
+
 class DetailsViewModel extends Cubit<DetailViewState> {
   final GetMovieById _getMovieById;
   final int movieId;
@@ -12,12 +14,13 @@ class DetailsViewModel extends Cubit<DetailViewState> {
     loadMovie();
   }
 
-  loadMovie() {
+  Future<void> loadMovie()async {
     emit(state.copyWith(isLoading: true));
-    _getMovieById(movieId).then((movie) {
-      emit(state.copyWith(isLoading: false, movie: movie, error: null));
-    }).onError((Exception error, _) {
-      emit(state.copyWith(error: error, isLoading: false));
-    });
+    final result = await _getMovieById(movieId);
+    switch(result){
+      case Success(): emit(state.copyWith(isLoading: false, movie: result.value , error: null));
+      case Failure(): emit(state.copyWith(error: result.exception, isLoading: false));
+      case Loading(): emit(state.copyWith(isLoading: true));
+    }
   }
 }
